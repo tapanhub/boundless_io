@@ -56,7 +56,9 @@ int bio_server_init(void)
 	server_node.role = BIO_SERVER_NODE;
 	INIT_LIST_HEAD(&server_node.devlist);
 	
+	pr_info("creating debugfs entries\n");
 	init_bioctl();
+	pr_info("starting bio server\n");
 	start_bio_server(get_snode());
     	return 0;
 }

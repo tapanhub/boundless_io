@@ -46,6 +46,9 @@ static ssize_t bio_ctl_write(struct file *fp, const char __user *user_buffer,
 		return -EFAULT;
 	}
 	
+	if(strstr(command_buf, "help")) {
+		pr_info("echo '<server ipaddr>:<server port>' > bio_ctl\n");
+	}
   
 	s=command_buf;
 	{
@@ -75,8 +78,8 @@ static ssize_t bio_ctl_write(struct file *fp, const char __user *user_buffer,
 		}
 		
 	} 
-	printk("new config installed: server port=%d \n", biosconfig.sport);
 	if(biosconfig.reconfig == 1) {
+		printk("new config installed: server port=%d \n", biosconfig.sport);
 		bio_node_t *snode = get_snode();		
 		restart_bio_server(snode);
 		biosconfig.reconfig = 0;
@@ -93,14 +96,12 @@ static const struct file_operations bio_ctl_fops = {
 
 int  init_debugfs(void)
 {
-	basedir = debugfs_create_dir("boundlessio", NULL);
-	init_bioctl();
+	basedir = debugfs_create_dir("bio_ctl", NULL);
 	return (0);
 }
 
 void exit_debugfs(void) 
 { 
-	exit_bioctl();
 	if(basedir)
 		debugfs_remove_recursive(basedir); 
 }
@@ -118,7 +119,6 @@ int exit_bioctl(void)
 	if (!bio_ctl) { 
 		debugfs_remove(bio_ctl);
 	}
-
 	exit_debugfs();
 	return 0;
 }

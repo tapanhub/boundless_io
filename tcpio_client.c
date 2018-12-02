@@ -179,6 +179,7 @@ void cleanup_tcpio_client(bio_node_t *cnode)
         if (cnode->bio_conn.client_socket != NULL) {
                 printk("release the client_socket\n");
                 sock_release(cnode->bio_conn.client_socket);
+		cnode->bio_conn.connected = 0;
                 cnode->bio_conn.client_socket = NULL;
         }
 

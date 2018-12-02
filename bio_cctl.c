@@ -58,6 +58,9 @@ static ssize_t bio_ctl_write(struct file *fp, const char __user *user_buffer,
 	if(copy_from_user(command_buf, user_buffer, count)) {
 		return -EFAULT;
 	}
+	if(strstr(command_buf, "help")) {
+		pr_info("echo '<server ipaddr>:<server port>' > bio_ctl\n");
+	}
 	
   
 	if ((s=strstr(command_buf, ":"))) {
@@ -107,10 +110,10 @@ static ssize_t bio_ctl_write(struct file *fp, const char __user *user_buffer,
 		}
 	} 
 
-	printk("new config installed: serverip =%s server port=%d \n",
-		bioconfig.serverip, bioconfig.dport);
 
 	if(bioconfig.reconfig == 1 ) {
+		printk("new config installed: serverip =%s server port=%d \n",
+			bioconfig.serverip, bioconfig.dport);
 		bio_conn_init();
 		bioconfig.reconfig = 0;
 		cleanup_tcpio_client(get_cnode());
