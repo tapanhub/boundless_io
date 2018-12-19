@@ -68,7 +68,7 @@ int tcpio_serv_recv(bio_node_t *snode, tcpio_msg_t *tmsg)
 	if(size > 0) {
 		atomic_inc(&revc_count);
 	}
-	//pr_info("sock_recvmsg returned %d\n", size);
+	pr_info("sock_recvmsg returned %d\n", size);
 	return size;
 }
   
